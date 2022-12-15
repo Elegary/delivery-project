@@ -8,5 +8,5 @@
 
 Pour installer les dépendances taper
 ```sh
-pip3 install tk customtkinter pandas
+$ pip3 install tk customtkinter pandas
 ```
