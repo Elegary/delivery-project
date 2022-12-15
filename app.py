@@ -67,7 +67,7 @@ class App(customtkinter.CTk):
 
         # create order history frame
         self.order_history_frame = customtkinter.CTkFrame(self)
-        self.order_history_frame.grid(row=0, column=3, rowspan=4, padx=(20, 20), pady=(20, 0))
+        self.order_history_frame.grid(row=0, column=3, rowspan=4, padx=(20, 20), pady=(20, 0), sticky="n")
         # Add a label
         self.label_order_history = customtkinter.CTkLabel(master=self.order_history_frame, text="Order history", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.label_order_history.grid(row=0, column=0, columnspan=1, padx=10, pady=10, sticky="")
