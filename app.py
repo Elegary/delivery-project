@@ -116,7 +116,7 @@ class App(customtkinter.CTk):
         # Add virtual total balance in USD (sum of USD wallet balance and BTC wallet balance converted to USD)
         self.total_balance = customtkinter.CTkLabel(self.main_frame, text="Total Virtual Balance", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.total_balance.grid(row=0, column=3, padx=20, pady=20, sticky="n")
-        self.total_balance_usd = customtkinter.CTkLabel(self.main_frame, text="0.00 USD", font=customtkinter.CTkFont(size=20, weight="bold"))   
+        self.total_balance_usd = customtkinter.CTkLabel(self.main_frame, text="~ 0.00 $", font=customtkinter.CTkFont(size=20, weight="bold"))   
         self.total_balance_usd.grid(row=1, column=3, padx=20, pady=20, sticky="n")
 
 
@@ -149,7 +149,6 @@ class App(customtkinter.CTk):
 
 
     def update_price(self):
-        print("Updating price...")
         price = api.get_price("bitcoin", "usd")
         print("Price:", price)
         # Format price with thousands separator (add space every 3 digits)
@@ -186,14 +185,24 @@ class App(customtkinter.CTk):
         df.to_csv("balance.csv", index=False)
 
     def update_wallet_balance(self):
-        print("Updating wallet balance...")
         self.wallet_balance_usd.configure(text=f"{self.wallet_balance_usd_value:.2f}".replace(",", " ") + " $")
         self.wallet_balance_btc.configure(text=f"{self.wallet_balance_btc_value:.8f} BTC")
         self.update_virtual_balance()
 
     def update_virtual_balance(self):
+        # Get old value
+        old_value = self.total_balance_usd.cget("text")
+        old_amount = float(old_value.split(" ")[1].replace("$", "").replace(",", ""))
+        if old_amount > self.wallet_balance_usd_value + self.wallet_balance_btc_value * self.previous_price:
+            self.total_balance_usd.configure(text_color="red")
+        elif old_amount < self.wallet_balance_usd_value + self.wallet_balance_btc_value * self.previous_price:
+            self.total_balance_usd.configure(text_color="green")
+        else:
+            self.total_balance_usd.configure(text_color="white")
         text = f"~ {self.wallet_balance_usd_value + self.wallet_balance_btc_value * self.previous_price:.2f}".replace(",", " ") + " $"
         self.total_balance_usd.configure(text=text)
+
+        self.after(1500, lambda: self.total_balance_usd.configure(text_color="white"))
 
     def retrieve_order_history_from_csv(self):
         print("Retrieving order history from order_history.csv with pandas...")
