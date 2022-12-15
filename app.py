@@ -161,7 +161,7 @@ class App(customtkinter.CTk):
             self.current_price.configure(text_color="red")
             self.current_price.configure(text="↓ " + str_price)
         else:
-            self.current_price.configure(text_color="white")
+            self.current_price.configure(text_color=("gray10", "#DCE4EE"))
             self.current_price.configure(text=str_price)
         self.previous_price = price
 
@@ -198,11 +198,12 @@ class App(customtkinter.CTk):
         elif old_amount < self.wallet_balance_usd_value + self.wallet_balance_btc_value * self.previous_price:
             self.total_balance_usd.configure(text_color="green")
         else:
-            self.total_balance_usd.configure(text_color="white")
+            self.total_balance_usd.configure(text_color="light")
         text = f"~ {self.wallet_balance_usd_value + self.wallet_balance_btc_value * self.previous_price:.2f}".replace(",", " ") + " $"
         self.total_balance_usd.configure(text=text)
 
-        self.after(1500, lambda: self.total_balance_usd.configure(text_color="white"))
+        # Reset color after 1.5 seconds to default depending ont the current theme
+        self.after(1500, lambda: self.total_balance_usd.configure(text_color=("gray10", "#DCE4EE")))
 
     def retrieve_order_history_from_csv(self):
         print("Retrieving order history from order_history.csv with pandas...")
@@ -228,13 +229,13 @@ class App(customtkinter.CTk):
         # Add infos on columns
         order_type = customtkinter.CTkLabel(order_frame, text=order["type"], width=50, corner_radius=8, text_color="white", bg_color="green" if order["type"] == "BUY" else "red")
         order_type.grid(row=0, column=0, padx=10, pady=10, sticky="n")
-        order_amount = customtkinter.CTkLabel(order_frame, text=f"{order['amount']:.8f} BTC", text_color="white")
+        order_amount = customtkinter.CTkLabel(order_frame, text=f"{order['amount']:.8f} BTC")
         order_amount.grid(row=0, column=1, padx=5, pady=5, sticky="n")
-        order_price = customtkinter.CTkLabel(order_frame, text=f"{order['price']:,}".replace(",", " ") + " $", text_color="white")
+        order_price = customtkinter.CTkLabel(order_frame, text=f"{order['price']:,}".replace(",", " ") + " $")
         order_price.grid(row=0, column=2, padx=5, pady=5, sticky="n")
-        order_total = customtkinter.CTkLabel(order_frame, text=f"{order['total']:,}".replace(",", " ") + " $", text_color="white")
+        order_total = customtkinter.CTkLabel(order_frame, text=f"{order['total']:,}".replace(",", " ") + " $")
         order_total.grid(row=0, column=3, padx=5, pady=5, sticky="n")
-        order_date = customtkinter.CTkLabel(order_frame, text=order["date"], text_color="white")
+        order_date = customtkinter.CTkLabel(order_frame, text=order["date"])
         order_date.grid(row=0, column=4, padx=5, pady=5, sticky="n")
         
 
