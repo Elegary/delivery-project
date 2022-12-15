@@ -198,7 +198,7 @@ class App(customtkinter.CTk):
         elif old_amount < self.wallet_balance_usd_value + self.wallet_balance_btc_value * self.previous_price:
             self.total_balance_usd.configure(text_color="green")
         else:
-            self.total_balance_usd.configure(text_color="light")
+            self.total_balance_usd.configure(text_color=("gray10", "#DCE4EE"))
         text = f"~ {self.wallet_balance_usd_value + self.wallet_balance_btc_value * self.previous_price:.2f}".replace(",", " ") + " $"
         self.total_balance_usd.configure(text=text)
 
